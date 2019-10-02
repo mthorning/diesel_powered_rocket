@@ -1,0 +1,1 @@
+/home/mthorning/Documents/code/hello-rocket/diesel_demo/target/debug/publish_post: /home/mthorning/Documents/code/hello-rocket/diesel_demo/src/bin/publish_post.rs /home/mthorning/Documents/code/hello-rocket/diesel_demo/src/lib.rs /home/mthorning/Documents/code/hello-rocket/diesel_demo/src/models.rs /home/mthorning/Documents/code/hello-rocket/diesel_demo/src/schema.rs
