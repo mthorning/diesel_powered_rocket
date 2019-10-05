@@ -2,14 +2,15 @@
     export let hideForm;
     export let savePost;
 
-    let formValues = {
+    export let formValues = {
+	id: '',
 	title: '',
 	body: '',
     };
 
     function submitHandler() {
 	savePost(formValues);
-	formValues = { title: '', body: '' };
+	hideForm();
     }
 </script>
 
@@ -41,3 +42,5 @@
 	<input type="submit" />
     </div>
 </form>
+
+
