@@ -4,7 +4,7 @@
   export let setEditPost
   export let deletePost
   export let posts = []
-  export let selectedPost
+  let selectedPost
 </script>
 
 <style>
@@ -27,17 +27,6 @@
   <h2>Blog Posts!</h2>
 
   <TitleSelect />
-
-  {#if posts.length}
-    <select bind:value={selectedPost}>
-      <option>Select a post</option>
-      {#each posts as post (post.id)}
-        <option value={post.id}>{post.title}</option>
-      {/each}
-    </select>
-  {:else}
-    <p>No posts.</p>
-  {/if}
 
   {#if selectedPost}
     <pre>{posts.find(post => post.id === selectedPost).body}</pre>

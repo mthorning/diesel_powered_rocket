@@ -1,15 +1,15 @@
 <script>
-    export let hideForm;
-    export let savePost;
+    import HTTP from './HTTP.svelte';
 
+    export let hideForm;
     export let formValues = {
-	id: '',
 	title: '',
-	body: '',
+	body: ''
     };
+    let submit = false;
 
     function submitHandler() {
-	savePost(formValues);
+	submit = true;
 	hideForm();
     }
 </script>
@@ -26,6 +26,10 @@
 	justify-content: flex-end;
     }
 </style>
+
+{#if submit}
+    <HTTP url="api/new" data={formValues} method="POST" />
+{/if}
 
 <button on:click={hideForm}>Hide Form</button>
 

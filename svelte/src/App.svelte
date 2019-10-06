@@ -3,10 +3,7 @@
     import PostViewer from './components/PostViewer.svelte';
 
     let showForm = false;
-    let posts = [
-	{ id: 1, title: 'Post one', body: 'This is the first post' },
-	{ id: 2, title: 'A follow up', body: 'The difficult second blog post' }
-    ];
+
 </script>
 
 <style>
