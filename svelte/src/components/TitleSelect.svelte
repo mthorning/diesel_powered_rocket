@@ -7,6 +7,10 @@
 
 <HTTP url="/api/titles" on:data={({ detail }) => titles = detail} />
 
+{#if selectedTitle}
+<HTTP url="/api/titles" on:data={({ detail }) => titles = detail} />
+{/if}
+
 {#if titles.length}
     <select bind:value={selectedTitle}>
 	<option value={undefined}>Select a post</option>

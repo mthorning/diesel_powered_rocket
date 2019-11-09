@@ -28,7 +28,7 @@
 </style>
 
 {#if submit}
-    <HTTP url="api/new" data={formValues} method="POST" />
+    <HTTP url="api/new" data={formValues} method="post" />
 {/if}
 
 <button on:click={hideForm}>Hide Form</button>
