@@ -21,6 +21,6 @@
     "autobuild": "rollup -c -w",
     "rocket:start": "cd .. && cargo run",
     "pg:start": "docker start diesel-pg",
-    "dev": "run-p autobuild rocket:start"
+    "start": "run-p autobuild rocket:start"
   }
 }
