@@ -3,8 +3,12 @@
 
   export let setEditPost
   export let deletePost
-  export let posts = []
   let selectedPost
+
+  function handleSelectedPost({ detail }) {
+    console.log(arguments)
+    selectedPost = detail
+  }
 </script>
 
 <style>
@@ -24,12 +28,12 @@
 </style>
 
 <div class="container">
-  <h2>Blog Posts!</h2>
 
-  <TitleSelect />
+  <TitleSelect on:selectedPost={handleSelectedPost} />
 
   {#if selectedPost}
-    <pre>{posts.find(post => post.id === selectedPost).body}</pre>
+    <h2>{selectedPost.title}</h2>
+    <pre>{selectedPost.body}</pre>
     <span class="link" on:click={() => setEditPost(selectedPost)}>edit</span>
     <span>|</span>
     <span class="link" on:click={() => deletePost(selectedPost)}>delete</span>
