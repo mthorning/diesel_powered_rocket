@@ -1,14 +1,10 @@
 <script>
   import TitleSelect from './TitleSelect.svelte'
+  import { selectedPostId } from '../stores.js'
 
-  export let setEditPost
-  export let deletePost
-  let selectedPost
-
-  function handleSelectedPost({ detail }) {
-    console.log(arguments)
-    selectedPost = detail
-  }
+  // if selectedPostId then we need to call the API to
+  // get the post:
+  let selectedPost = {}
 </script>
 
 <style>
@@ -29,7 +25,7 @@
 
 <div class="container">
 
-  <TitleSelect on:selectedPost={handleSelectedPost} />
+  <TitleSelect />
 
   {#if selectedPost}
     <h2>{selectedPost.title}</h2>
