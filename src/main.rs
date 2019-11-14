@@ -75,7 +75,6 @@ fn create_post(new_post: Json<NewPost>) -> JsonValue {
 fn main() {
     rocket::ignite()
         .mount("/", StaticFiles::from("static/"))
-        .mount("/api", routes![get_titles, get_post, create_post
-        ])
+        .mount("/api", routes![get_titles, get_post, create_post])
         .launch();
 }
