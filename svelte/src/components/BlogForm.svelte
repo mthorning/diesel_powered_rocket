@@ -9,20 +9,11 @@
   }
 
   function submitHandler() {
-    axios
-      .post('api/new', formValues)
-      .then(
-        ({
-          data: {
-            post: { id, title },
-          },
-        }) => {
-          selectedPostId.set(id)
-          return { id, title }
-        }
-      )
-      .then(newTitle => titles.update(list => [...list, newTitle]))
-      .then(hideForm)
+    axios.post('api/new', formValues).then(({ data: { id } }) => {
+      titles.fetch()
+      selectedPostId.set(id)
+      hideForm()
+    })
   }
 </script>
 

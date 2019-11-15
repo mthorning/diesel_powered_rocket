@@ -70,7 +70,7 @@ pub struct NewPost {
 fn create_post(new_post: Json<NewPost>) -> ApiResponse {
     match handlers::create_post(&new_post.title, &new_post.body) {
         Ok(post) => ApiResponse {
-            data: json!({ "post": post }),
+            data: json!({ "id": post.id }),
             status: Status::Ok,
         },
         Err(error) => ApiResponse {
