@@ -67,9 +67,18 @@ pub struct NewPost {
 }
 
 #[post("/new", data = "<new_post>")]
-fn create_post(new_post: Json<NewPost>) -> JsonValue {
-    let db_response = handlers::create_post(&new_post.title, &new_post.body);
-    json!({ "title": db_response.title, "body": db_response.body })
+fn create_post(new_post: Json<NewPost>) -> ApiResponse {
+    match handlers::create_post(&new_post.title, &new_post.body) {
+        Ok(post) => ApiResponse {
+            data: json!({ "post": post }),
+            status: Status::Ok,
+        },
+        Err(error) => ApiResponse {
+            data: json!({ "error": format!("DB Error: {:?}", error)}),
+            status: Status::NotFound,
+        }
+    }
+    
 }
 
 fn main() {

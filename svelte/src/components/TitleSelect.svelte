@@ -1,25 +1,21 @@
 <script>
   import axios from 'axios'
-  import { createEventDispatcher, onMount } from 'svelte'
+  import { onMount } from 'svelte'
   import { titles, selectedPostId } from '../stores'
 
-  let selectedTitle
-  let dispatch = createEventDispatcher()
-
   onMount(() => {
-    axios.get('/api/titles').then(({ data }) => titles.set(data))
+    axios.get('/api/titles').then(({ data }) => titles.set(data.titles))
   })
 
-  function handleTitleSelection(stuff) {
-    console.log(id)
-    selectedPostId.set(id)
+  function handleTitleSelection({ target: { value } }) {
+    selectedPostId.set(value)
   }
 </script>
 
-{#if titles.length}
-  <select onSelect={handleTitleSelection}>
+{#if $titles.length}
+  <select on:change={handleTitleSelection}>
     <option value={undefined}>Select a post</option>
-    {#each titles as item (item.id)}
+    {#each $titles as item (item.id)}
       <option value={item.id}>{item.title}</option>
     {/each}
   </select>
