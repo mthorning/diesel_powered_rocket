@@ -1,12 +1,15 @@
 <script>
   import TitleSelect from './TitleSelect.svelte'
-  import { selectedPost } from '../stores.js'
+  import { titles, selectedPost, selectedPostId } from '../stores.js'
+  import axios from 'axios'
 
   const setEditPost = () => {
     return null
   }
-  const deletePost = () => {
-    return null
+  const deletePost = async () => {
+    await axios.delete(`/api/delete/${$selectedPostId}`)
+    titles.fetch()
+    selectedPostId.set(undefined)
   }
 </script>
 

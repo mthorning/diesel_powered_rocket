@@ -5,7 +5,6 @@
   onMount(() => {
     titles.fetch()
   })
-  $: console.log($selectedPostId)
 </script>
 
 {#if $titles.length}

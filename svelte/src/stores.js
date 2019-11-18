@@ -6,9 +6,7 @@ export const selectedPost = derived(
   selectedPostId,
   ($selectedPostId, set) => {
     if ($selectedPostId) {
-      axios
-        .get(`/api/post/${$selectedPostId}`)
-        .then(({ data: { post } }) => set(post))
+      axios.get(`/api/post/${$selectedPostId}`).then(({ data }) => set(data))
     } else {
       set({})
     }
@@ -19,7 +17,7 @@ export const selectedPost = derived(
 export const titles = (function() {
   const store = writable([])
   function fetch() {
-    axios.get('/api/titles').then(({ data }) => store.set(data.titles))
+    axios.get('/api/titles').then(({ data }) => store.set(data))
   }
   return { ...store, fetch }
 })()

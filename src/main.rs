@@ -4,8 +4,9 @@
 //#[macro_use] extern crate rocket_contrib;
 //#[macro_use] extern crate serde_derive;
 
-use serde_derive::{Serialize, Deserialize};
-use rocket::{routes, get, post};
+use serde::{Serialize};
+use serde_derive::{Deserialize, Serialize};
+use rocket::{routes, get, post, delete};
 use rocket_contrib::json;
 
 use rocket_contrib::serve::StaticFiles;
@@ -15,11 +16,27 @@ use rocket::http::{ContentType, Status};
 use rocket::response;
 use rocket::response::{Responder, Response};
 use rocket::request::Request;
+use diesel::QueryResult;
 
 #[derive(Debug)]
 struct ApiResponse {
     data: JsonValue,
     status: Status
+}
+
+impl ApiResponse {
+    pub fn from<T: Serialize>(db_response: QueryResult<T>) -> ApiResponse {
+        match db_response {
+            Ok(response) => ApiResponse {
+                data: json!(response),
+                status: Status::Ok,
+            },
+            Err(error) => ApiResponse {
+                data: json!({ "error": format!("{:?}", error)}),
+                status: Status::NotFound,
+            }
+        }
+    }
 }
 
 impl<'r> Responder<'r> for ApiResponse {
@@ -33,31 +50,12 @@ impl<'r> Responder<'r> for ApiResponse {
 
 #[get("/titles")]
 fn get_titles() -> ApiResponse {
-    match handlers::get_titles() {
-        Ok(titles) => ApiResponse {
-            data: json!({ "titles": titles }),
-            status: Status::Ok,
-        },
-        Err(error) => ApiResponse {
-            data: json!({ "error": format!("DB Error: {:?}", error)}),
-            status: Status::NotFound,
-        }
-    }
-
+    ApiResponse::from(handlers::get_titles())
 }
 
 #[get("/post/<id>")]
 fn get_post(id: String) -> ApiResponse {
-    match handlers::get_post(id.parse::<i32>().unwrap()) {
-        Ok(post) => ApiResponse {
-            data: json!({ "post": post }),
-            status: Status::Ok,
-        },
-        Err(error) => ApiResponse {
-            data: json!({ "error": format!("DB Error: {:?}", error)}),
-            status: Status::NotFound,
-        }
-    }
+    ApiResponse::from(handlers::get_post(id.parse::<i32>().unwrap()))
 }
     
 #[derive(Serialize, Deserialize)]
@@ -68,22 +66,17 @@ pub struct NewPost {
 
 #[post("/new", data = "<new_post>")]
 fn create_post(new_post: Json<NewPost>) -> ApiResponse {
-    match handlers::create_post(&new_post.title, &new_post.body) {
-        Ok(post) => ApiResponse {
-            data: json!({ "id": post.id }),
-            status: Status::Ok,
-        },
-        Err(error) => ApiResponse {
-            data: json!({ "error": format!("DB Error: {:?}", error)}),
-            status: Status::NotFound,
-        }
-    }
-    
+    ApiResponse::from(handlers::create_post(&new_post.title, &new_post.body))
+}
+
+#[delete("/delete/<id>")]
+    fn delete_post(id: String) -> ApiResponse {
+        ApiResponse::from(handlers::delete_post(id.parse::<i32>().unwrap()))
 }
 
 fn main() {
     rocket::ignite()
         .mount("/", StaticFiles::from("static/"))
-        .mount("/api", routes![get_titles, get_post, create_post])
+        .mount("/api", routes![get_titles, get_post, create_post, delete_post])
         .launch();
 }

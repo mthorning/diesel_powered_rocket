@@ -16,7 +16,7 @@
 </style>
 
 <div class="app">
-  <h1>Cruddy Blog Site</h1>
+  <h1>Not Very Good Blog Site</h1>
 
   {#if showForm}
     <BlogForm hideForm={() => (showForm = false)} />

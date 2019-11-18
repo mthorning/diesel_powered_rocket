@@ -1,5 +1,5 @@
 <script>
-  import { selectedPostId, titles } from '../stores.js'
+  import { titles } from '../stores.js'
   import axios from 'axios'
 
   export let hideForm
@@ -8,12 +8,10 @@
     body: '',
   }
 
-  function submitHandler() {
-    axios.post('api/new', formValues).then(({ data: { id } }) => {
-      titles.fetch()
-      selectedPostId.set(id)
-      hideForm()
-    })
+  async function submitHandler() {
+    await axios.post('api/new', formValues)
+    titles.fetch()
+    hideForm()
   }
 </script>
 
