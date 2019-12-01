@@ -1,11 +1,11 @@
 use diesel::prelude::*;
 use diesel::insert_into;
-use crate::db::models::{Title, Post};
-use crate::db::connect;
+use db::models::{Title, Post};
+use db::connect;
 use diesel::pg::PgConnection;
-use crate::db::schema::posts::dsl::*;
+use db::schema::posts::dsl::*;
 
-pub fn get_titles() -> QueryResult<Vec<Title>> {
+pub fn get_titles(conn: connection::DbConn) -> QueryResult<Vec<Title>> {
     let conn: PgConnection = connect::establish_connection();
     let result = posts.select((id, title)).order(created_at.desc()).load::<Title>(&conn);
     result
